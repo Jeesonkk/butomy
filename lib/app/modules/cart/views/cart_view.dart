@@ -50,9 +50,8 @@ class CartView extends GetView<CartController> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: CartWidget().CartProductWidget(
-                      cartlist: homectrl.cartList,
-                      onminimiseqty: () {},
-                      onaddqty: () {}),
+                    cartlist: homectrl.cartList,
+                  ),
                 ),
                 SizedBox(
                   height: 20,

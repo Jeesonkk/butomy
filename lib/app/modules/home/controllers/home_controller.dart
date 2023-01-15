@@ -43,7 +43,25 @@ class HomeController extends GetxController
     }
   }
 
-  void addquatity() {}
+  void removeQty(
+      {required String productname,
+      required String productimage,
+      required String producttype,
+      required String productprice,
+      required String productqty,
+      required String productid}) {
+    final index =
+        cartList.indexWhere((element) => element.productname == productname);
+    if (cartList[index].productname == productname) {
+      cartList[index] = CartProduct(
+          productname: cartList[index].productname,
+          productimage: cartList[index].productimage,
+          productprice: cartList[index].productprice,
+          productqty: (int.parse(cartList[index].productqty) - 1).toString(),
+          producttype: cartList[index].producttype,
+          productid: cartList[index].productid);
+    }
+  }
 
   void addToCart(
       {required String productname,

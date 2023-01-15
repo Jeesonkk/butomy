@@ -441,10 +441,18 @@ class HomePageWidgets {
                 }
 
                 if (homectrl.cartList.isNotEmpty) {
+                  final index = homectrl.cartList.indexWhere(
+                      (element) => element.productname == e?.kitchenItemName);
                   var matchinglist = homectrl.cartList.firstWhere((element) =>
                       (element.productname).toString() ==
                       (e?.kitchenItemName).toString());
-                  homectrl.cartList.remove(matchinglist);
+                  homectrl.removeQty(
+                      productname: homectrl.cartList[index].productname,
+                      productimage: homectrl.cartList[index].productimage,
+                      producttype: homectrl.cartList[index].producttype,
+                      productprice: homectrl.cartList[index].productprice,
+                      productqty: homectrl.cartList[index].productqty,
+                      productid: homectrl.cartList[index].productid);
                 }
               },
               itemqty: homectrl.cartList.isNotEmpty
@@ -584,7 +592,7 @@ class HomePageWidgets {
                                   .productqty
                                   .toString()
                               : '0',
-                          style: TextStyle(fontSize: 8),
+                          style: TextStyle(fontSize: 10),
                         )),
                     IconButton(icon: new Icon(Icons.add), onPressed: onaddqty)
                   ],

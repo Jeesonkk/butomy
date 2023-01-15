@@ -8,18 +8,24 @@ class LoginWidgets {
       required Function() onTap}) {
     return InkWell(
       child: Container(
-        padding: EdgeInsets.only(left: 150, right: 150, top: 10, bottom: 10),
+        padding: EdgeInsets.only(left: 10, right: 130, top: 10, bottom: 10),
         decoration: BoxDecoration(
           color: container_color,
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(height: 30, width: 30, child: Image.asset(buttonicon)),
+            SizedBox(
+              width: 110,
+            ),
             Text(
               buttontext,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
             )
           ],
         ),

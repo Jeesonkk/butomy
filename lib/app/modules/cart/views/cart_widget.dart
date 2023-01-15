@@ -62,10 +62,10 @@ class CartWidget {
     );
   }
 
-  Widget CartProductWidget(
-      {required List<CartProduct> cartlist,
-      required Function() onminimiseqty,
-      required Function() onaddqty}) {
+  Widget CartProductWidget({
+    required List<CartProduct> cartlist,
+  }) {
+    final HomeController homectrl = Get.put(HomeController());
     return cartlist.isNotEmpty
         ? Container(
             padding: EdgeInsets.all(5),
@@ -115,10 +115,51 @@ class CartWidget {
                           children: <Widget>[
                             IconButton(
                                 icon: Icon(Icons.remove),
-                                onPressed: onminimiseqty),
+                                onPressed: () {
+                                  if (homectrl.idex.value >= 0) {
+                                    homectrl.removeQty(
+                                        productname: homectrl
+                                            .cartList[index].productname,
+                                        productimage: homectrl
+                                            .cartList[index].productimage,
+                                        producttype: homectrl
+                                            .cartList[index].producttype,
+                                        productprice: homectrl
+                                            .cartList[index].productprice,
+                                        productqty:
+                                            homectrl.cartList[index].productqty,
+                                        productid:
+                                            homectrl.cartList[index].productid);
+                                  }
+                                }),
                             Text(cartlist[index].productqty.toString()),
                             IconButton(
-                                icon: Icon(Icons.add), onPressed: onaddqty)
+                                icon: Icon(Icons.add),
+                                onPressed: () {
+                                  if (homectrl.idex.value >= 0) {
+                                    homectrl.idex(homectrl.cartList.indexWhere(
+                                        (element) =>
+                                            (element.productname).toString() ==
+                                            (cartlist[index].productname)
+                                                .toString()));
+                                  }
+                                  print(index);
+                                  homectrl.addToCart(
+                                      productid: (cartlist[index].productid)
+                                          .toString(),
+                                      productname: (cartlist[index].productname)
+                                          .toString(),
+                                      productimage:
+                                          (cartlist[index].productimage)
+                                              .toString(),
+                                      producttype: (cartlist[index].producttype)
+                                          .toString(),
+                                      productprice:
+                                          (cartlist[index].productprice)
+                                              .toString(),
+                                      productqty:
+                                          homectrl.itemqty.value.toString());
+                                })
                           ],
                         ),
                       ),
