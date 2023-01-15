@@ -12,7 +12,8 @@ class HomeController extends GetxController
   final cartList = <CartProduct>[].obs;
   final itemqty = 0.obs;
   late TabController tabController;
-
+  final idex = 0.obs;
+  final deafaultcartlist = <CartProduct>[];
   @override
   void onInit() {
     super.onInit();
@@ -52,6 +53,13 @@ class HomeController extends GetxController
       required String productqty,
       required String productid}) {
     if (cartList.isEmpty) {
+      deafaultcartlist.add(CartProduct(
+          productname: '',
+          productimage: '',
+          productprice: '',
+          productqty: '0',
+          producttype: '',
+          productid: ''));
       cartList.add(CartProduct(
           productname: productname,
           productimage: productimage,

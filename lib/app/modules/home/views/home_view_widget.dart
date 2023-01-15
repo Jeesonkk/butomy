@@ -361,6 +361,7 @@ class HomePageWidgets {
                           .toString(),
                       productlist:
                           homectrl.homemodelproductsmodel.value.data?[index],
+                      index: index,
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {
@@ -399,10 +400,13 @@ class HomePageWidgets {
     );
   }
 
-  Widget expansionTile({required String title, required Datum? productlist}) {
+  Widget expansionTile(
+      {required String title,
+      required Datum? productlist,
+      required int index}) {
     final HomeController homectrl = Get.put(HomeController());
     List<Widget> productlistwidget = [];
-    int index = 0;
+
     productlist?.products
         ?.map((e) => productlistwidget.add(product(
               percentage: '0',
@@ -414,8 +418,12 @@ class HomePageWidgets {
               discountprice: (e?.itemDiscountPrice).toString(),
               restaurantimag: (e?.kitchenItemImage?[0]?.images).toString(),
               onaddqty: () {
-                index = homectrl.cartList.indexWhere((element) =>
-                    element.productname == (e?.kitchenItemName).toString());
+                if (homectrl.idex.value >= 0) {
+                  homectrl.idex(productlist.products!.indexWhere((element) =>
+                      (element?.kitchenItemName).toString() ==
+                      (e?.kitchenItemName).toString()));
+                }
+                print(index);
                 homectrl.addToCart(
                     productid: (e?.kitchenItemId).toString(),
                     productname: (e?.kitchenItemName).toString(),
@@ -425,15 +433,25 @@ class HomePageWidgets {
                     productqty: homectrl.itemqty.value.toString());
               },
               onminiseqty: () {
-                print(e!.kitchenItemName.toString());
+                if (homectrl.idex.value >= 0) {
+                  homectrl.idex(productlist.products!.indexWhere((element) =>
+                      (element?.kitchenItemName).toString() ==
+                      (e?.kitchenItemName).toString()));
+                  print(e!.kitchenItemName.toString());
+                }
+
                 if (homectrl.cartList.isNotEmpty) {
                   var matchinglist = homectrl.cartList.firstWhere((element) =>
                       (element.productname).toString() ==
-                      (e.kitchenItemName).toString());
+                      (e?.kitchenItemName).toString());
                   homectrl.cartList.remove(matchinglist);
                 }
               },
-              itemqty: '0',
+              itemqty: homectrl.cartList.isNotEmpty
+                  ? homectrl.cartList[index].productqty
+                  : '0',
+              index: index,
+              products: productlist.products,
             )))
         .toList();
     return ExpansionTile(
@@ -457,7 +475,9 @@ class HomePageWidgets {
       required String restaurantimag,
       required String itemqty,
       required Function() onaddqty,
-      required Function() onminiseqty}) {
+      required Function() onminiseqty,
+      required int index,
+      required List<Product?>? products}) {
     final HomeController homectrl = Get.put(HomeController());
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -553,7 +573,19 @@ class HomePageWidgets {
                   children: <Widget>[
                     IconButton(
                         icon: new Icon(Icons.remove), onPressed: onminiseqty),
-                    Text(itemqty.toString()),
+                    Obx(() => Text(
+                          homectrl.cartList.isNotEmpty
+                              ? homectrl.cartList
+                                  .firstWhere(
+                                      (element) =>
+                                          element.productname == productname,
+                                      orElse: () =>
+                                          homectrl.deafaultcartlist[0])
+                                  .productqty
+                                  .toString()
+                              : '0',
+                          style: TextStyle(fontSize: 8),
+                        )),
                     IconButton(icon: new Icon(Icons.add), onPressed: onaddqty)
                   ],
                 ),
